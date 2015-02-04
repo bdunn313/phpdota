@@ -45,7 +45,8 @@ class SteamApiCaller
      */
     public function get()
     {
-        $this->client->get($this->constructUrl());
+        $response = $this->client->get($this->constructUrl());
+        return $response->json(['object' => true]);
     }
 
     /**
@@ -54,24 +55,8 @@ class SteamApiCaller
      */
     public function endpoint($endpoint_string)
     {
-        if (mb_substr($endpoint_string, -1, 1) !== '/')
-        {
-            $endpoint_string = $endpoint_string . '/';
-        }
-        if (mb_substr($endpoint_string, 0, 1) === '/')
-        {
-            $endpoint_string = mb_substr($endpoint_string, 1);
-        }
-        $this->endpoint = $endpoint_string;
+        $this->endpoint = $this->fixEndpointString($endpoint_string);
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    private function constructUrl()
-    {
-        return $this->base_url . ($this->endpoint ?: '') . $this->constructUrlParameters();
     }
 
     /**
@@ -87,14 +72,32 @@ class SteamApiCaller
     /**
      * @return string
      */
+    private function constructUrl()
+    {
+        if (!$this->endpoint)
+            throw new \BadMethodCallException('You must provide an endpoint before attempting to make an API call.');
+        return $this->base_url . ($this->endpoint ?: '') . $this->constructUrlParameters();
+    }
+
+    /**
+     * @return string
+     */
     private function constructUrlParameters()
     {
         $urlString = '?key=' . $this->api_key;
         if ($this->options)
-        {
             $urlString = $urlString . '&' . http_build_query($this->options);
-        }
 
         return $urlString;
+    }
+
+    /**
+     * @param $endpoint_string
+     * @return string
+     */
+    private function fixEndpointString($endpoint_string)
+    {
+        // To account for leading and trailing slashes.
+        return preg_replace('/^\/?(\w+(\/\w+)+)\/?$/', '$1/', $endpoint_string);
     }
 }
