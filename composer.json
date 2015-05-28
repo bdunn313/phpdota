@@ -1,11 +1,15 @@
 {
     "name": "bdunn313/phpdota",
     "description": "A little PHP Dota 2 API Wrapper.",
+    "keywords": ["dota", "dota 2", "api wrapper", "steam api"],
+    "homepage": "https://github.com/bdunn313/phpdota",
     "license": "MIT",
     "authors": [
         {
             "name": "Brad Dunn",
-            "email": "brad@braddunn.com"
+            "email": "brad@braddunn.com",
+            "homepage": "http://braddunn.com",
+            "role": "Developer"
         }
     ],
     "require": {
