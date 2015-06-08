@@ -1,6 +1,9 @@
 {
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-phpspec": "^0.5.3"
+    "gulp-notify": "^2.2.0",
+    "gulp-phpspec": "^0.5.3",
+    "gulp-shell": "^0.4.2",
+    "lodash": "^3.9.3"
   }
 }
